@@ -1,13 +1,10 @@
-# <p align="center">Zabbix Notification Telegram
+# <p align="center">Zabbix Notification with graph to Telegram
 <p align="center">Нотификатор оповещений в Telegram для <a href="https://www.zabbix.com/features#notification target="_blank"" >Zabbix</a>.<br>
 Легкая установка, гибкая настройка, информативные сообщения.
 <p align="center"><a href="https://www.zabbix.com/integrations/telegram#tab:3rd_party" target="_blank">Popular на www.zabbix.com</a> и <a href="https://share.zabbix.com/zabbix-tools-and-utilities/cat-notifications/zabbix-notification-telegram">share.zabbix.com</a>
 <br>
-## <p align="center">🔴 Проект закрыт. This project is deprecated. 🔴
-<br>Go to -> https://t.me/ZbxNTg/4241
 
 * [Возможности](#возможности)
-* [Планы](#планы)
 * [С чего начать](#с-чего-начать)
    * [Установка из source](#установка-из-source-git-requires)
 * [Создаем первое оповещение](#создаем-первое-оповещение)
@@ -28,10 +25,6 @@
 - Маппинг Emoji статуса и важности события.
 - Наложение watermark на изображение.
 - Обьединение графиков в альбом.
-
-## Планы
-- Обработка быстрых команд ботом <img alt="AppVeyor" src="https://img.shields.io/static/v1?label=status&message=beta&color=yellow?logo=appveyor">
-- Отправка метрик по запросу от бота <img alt="AppVeyor" src="https://img.shields.io/static/v1?label=status&message=beta&color=yellow?logo=appveyor">
 
 ## С чего начать
 Для работы потребуется Python 3+ и Zabbix 3+.
@@ -212,10 +205,6 @@ _В XML документах фрагмент, помещенный внутрь
 * Добавлены и изменены переменные в конфиг файле.
 * Изменен XML.
 
-
-## Помощь
-
-* Welcome! <a href="https://t.me/ZbxNTg" target="_blank">ZNTGroup</a>.
 
 
 ---
