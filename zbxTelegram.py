@@ -1,11 +1,9 @@
 #!/usr/lib/zabbix/alertscripts/venv/bin/python
 # -*- coding: utf-8 -*-
-########################
-#    Sokolov Dmitry    #
-# xx.sokolov@gmail.com #
-#  https://t.me/ZbxNTg #
-########################
-# https://github.com/xxsokolov/Zabbix-Notification-Telegram
+###################################################
+#    Sokolov Dmitry & Krasnousov Yuriy            #
+###################################################
+
 __author__ = "Sokolov Dmitry"
 __maintainer__ = "Sokolov Dmitry"
 __license__ = "MIT"
@@ -26,6 +24,8 @@ import json
 from errno import ENOENT
 import logging
 import html
+import pandas as pd
+import datetime
 
 
 class System:
@@ -166,7 +166,6 @@ def get_cookie():
             'User authorization failed: {} ({})'.format('Login name or password is incorrect.', zabbix_api_url))
         return False
     return cookie
-
 
 def get_chart_png(itemid, graff_name, period=None):
     try:
@@ -408,11 +407,50 @@ def gen_markup(eventid):
                              callback_data='{}'.format(json.dumps(dict(action="graphs", eventid=eventid)))))
     return markup
 
+def get_duty_for_today(excel_file_path):
+    # получаем текущую дату и номер листа в файле xlsx, соответствующий текущему месяцу
+    today = datetime.datetime.today()
+    current_month = today.month
+    current_list = current_month - 1
 
-def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=None, disable_notification=False):
+    # находим строку с текущей датой в листе
+    current_row = today.day - 1
+
+    # открываем файл Excel и читаем значения
+    excel_file = pd.ExcelFile(excel_file_path)
+    duty_sheet = excel_file.sheet_names[current_list]
+    duty_list = pd.read_excel(excel_file, sheet_name=duty_sheet)
+    duty_main = duty_list.iat[current_row, 1] if len(duty_list) > current_row and not pd.isna(duty_list.iat[current_row, 1]) else ''
+    duty_first = duty_list.iat[current_row, 2] if len(duty_list) > current_row and not pd.isna(duty_list.iat[current_row, 2]) else ''
+    duty_second = duty_list.iat[current_row, 3] if len(duty_list) > current_row and not pd.isna(duty_list.iat[current_row, 3]) else ''
+
+    # ищем значения в листе 13 и записываем их в переменные
+    temp_sheet = pd.read_excel(excel_file, sheet_name='current', usecols=[0, 1])
+    temp_main = temp_sheet[temp_sheet.iloc[:, 0] == duty_main].iat[0, 1] if duty_main else ' '
+    temp_first = temp_sheet[temp_sheet.iloc[:, 0] == duty_first].iat[0, 1] if duty_first else ' '
+    temp_second = temp_sheet[temp_sheet.iloc[:, 0] == duty_second].iat[0, 1] if duty_second else ' '
+
+    # определяем время и добавляем соответствующее значение в список duty
+    now = datetime.datetime.now().time()
+    duty = []
+    if datetime.time(8, 30) <= now <= datetime.time(17, 30):
+        duty.append(temp_main)
+    if datetime.time(11, 0) <= now <= datetime.time(20, 0):
+        duty.append(temp_first)
+    if now >= datetime.time(20, 0) or now <= datetime.time(8, 0):
+        duty.append(temp_second)
+
+    # возвращаем список как строку
+    return ' '.join(map(str, duty)
+
+list_of = get_duty_for_today(duty_xlsx_path if duty_enable else '')
+
+def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=None, disable_notification=False, list_of=list_of):
     try:
         sent_id = get_send_id(sent_to)
         if message and sent_to:
+            if list_of:
+                message += "\n" + list_of
             if graphs_png and isinstance(graphs_png, list):
                 try:
                     graphs_png[0].caption = message
@@ -601,7 +639,7 @@ def main():
         graph_period = data_zabbix['graphs_period']
     else:
         graph_period = zabbix_graph_period_default
-    
+
     url_list = []
     url_list.append(trigger_url) if trigger_url else None
     for item_id in list(set([x for x in data_zabbix.get('itemid').split()])):
@@ -616,7 +654,7 @@ def main():
     url_list.append(event_url) if event_url else None
     url_list.append(ack_url) if ack_url else None
     url_list.append(host_url) if host_url else None
-    
+
     graphs_name = body_messages_title.format(
         title=data_zabbix['title'],
         period_time=set_period_day_hour(graph_period))

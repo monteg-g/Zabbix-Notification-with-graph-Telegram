@@ -1,11 +1,9 @@
 #!/usr/lib/zabbix/alertscripts/venv/bin/python
 # -*- coding: utf-8 -*-
 ########################
-#    Sokolov Dmitry    #
-# xx.sokolov@gmail.com #
-#  https://t.me/ZbxNTg #
+# Sokolov Dmitry & Krasnousov Yuriy #
 ########################
-# Detailed instructions for all parameters on https://github.com/xxsokolov/Zabbix-Notification-Telegram
+
 __author__ = "Sokolov Dmitry"
 __maintainer__ = "Sokolov Dmitry"
 __license__ = "MIT"
@@ -17,7 +15,10 @@ config_log_file = '/usr/lib/zabbix/alertscripts/zbxTelegram_files/znt.log'
 
 tg_proxy = False
 tg_proxy_server = {'https': 'socks5://username:password@domen:port'}
-tg_token = '123123123123:ADDDD_er9beG-fGx33ktYqFkUpAdUtWe2s'
+tg_token = ''
+
+duty_enable = False
+duty_xlsx_path = ''
 
 watermark = True
 watermark_label = 'Dmitry Sokolov (https://github.com/xxsokolov)'
@@ -118,4 +119,3 @@ zabbix_status_emoji_map = {
     "High": "❤️",
     "Disaster": "💔",
     "Test": "🚽💩"}
-
