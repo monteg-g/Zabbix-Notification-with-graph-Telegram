@@ -23,7 +23,6 @@
 - Формирование и обновление cash файла (privat, group, group -> supergroup)<a href="#note3" id="note3ref"><sup>3</sup></a>
 - Гибкая настройка через конфигурационный файл, XML разметку в <a href="https://www.zabbix.com/documentation/current/manual/config/notifications/action" target="_blank">действиях триггеров</a> и Trigger Tags<a href="#note4" id="note4ref"><sup>4</sup></a>
 - Маппинг Emoji статуса и важности события.
-- Наложение watermark на изображение.
 - Обьединение графиков в альбом.
 
 ## С чего начать
