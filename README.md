@@ -57,14 +57,6 @@ $ git clone https://*.git .
 |tg_proxy|bool|Использовать прокси для отправки сообщений в Telegram|True|
 |tg_proxy_server|dict|Ссылка до Вашего прокси|```{'https': 'socks5://username:password@domen:port'}```
 |tg_token|string|Тот самый token, который Вы получали у <a href="https://core.telegram.org/bots#botfather" target="_blank">@BotFather</a>|```123123123123:ADDDD_er9beG-fGx33ktYqFkUpAdUtWe2s```|
-|watermark|bool|Наносить ватермарку на изображение графика|True|
-|watermark_label|string|Текст наносимый на изображение графика|'Dmitry Sokolov (https://github.com/xxsokolov)'|
-|watermark_font|string|Путь до файла шрифта|```/usr/lib/zabbix/alertscripts/zbxTelegram_files/ArialMT.ttf```|
-|watermark_minimal_height|string|Минимальный размер изображения графика для нанесения ватермарки|30|
-|watermark_fill|string||255|
-|watermark_rotate|string||0|
-|watermark_expand|bool||True|
-|watermark_text_color|string|Цвет текста в RGB|(60, 60, 60)|
 |body_messages|string|Шаблон формирование тела сообщения.<br>*Сообщение состоит из: subject, body, links, tags, mentions|
 |body_messages_cut_symbol|bool|Урезать тело сообщения|True|
 |body_messages_max_symbol|string|Максимальное кол-во символов в теле сообщения|600|
