@@ -1,13 +1,8 @@
 # <p align="center">Zabbix Notification with graph to Telegram
-<p align="center">Нотификатор оповещений в Telegram для <a href="https://www.zabbix.com/features#notification target="_blank"" >Zabbix 7</a>.<br>
+<p align="center">Нотификатор оповещений в Telegram для <a href="https://www.zabbix.com/documentation/7.0/en/manual"" >Zabbix 7</a>.<br>
 Легкая установка, гибкая настройка, информативные сообщения.
 <p align="center"><a href="https://www.zabbix.com/integrations/telegram#tab:3rd_party" target="_blank">Popular на www.zabbix.com</a> и <a href="https://share.zabbix.com/zabbix-tools-and-utilities/cat-notifications/zabbix-notification-telegram">share.zabbix.com</a>
 <br>
-
-* [Возможности](#возможности)
-* [Установка]
-* [Логирование](#логирование)
-
 
 ## Возможности
 - Графики, информативные заголовки, ссылки<a href="#note1" id="note1ref"><sup>1</sup></a>, тэги<a href="#note2" id="note2ref"><sup>2</sup></a> и упоминания объединены в **одно сообщение**.
