@@ -1,12 +1,12 @@
 #!/usr/lib/zabbix/alertscripts/venv/bin/python
 # -*- coding: utf-8 -*-
-###################################################
-#    Sokolov Dmitry & Krasnousov Yuriy            #
-###################################################
-
+#####################################
+# Sokolov Dmitry & Krasnousov Yuriy #
+#####################################
 __author__ = "Sokolov Dmitry"
-__maintainer__ = "Sokolov Dmitry"
+__maintainer__ = "Krasnousov Yuriy"
 __license__ = "MIT"
+
 import telebot
 from telebot import apihelper
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
@@ -24,8 +24,6 @@ import json
 from errno import ENOENT
 import logging
 import html
-import pandas as pd
-import datetime
 
 
 class System:
@@ -126,38 +124,14 @@ def xml_parsing(data):
                     actionid=settings_actionid, hostid=settings_hostid)
 
     except Exception as err:
-        loggings.error("Exception occurred: No XML in zabbix actions or it's not valid (xml parsing error). XML: {} ".format(
-            err), exc_info=config_exc_info), exit(1)
+        loggings.error(
+            "Exception occurred: No XML in zabbix actions or it's not valid (xml parsing error). XML: {} ".format(
+                err), exc_info=config_exc_info), exit(1)
 
-
-def watermark_text(img):
-    img = io.BytesIO(img)
-    img = Image.open(img)
-    if img.height < watermark_minimal_height:
-        loggings.info("Cannot set watermark text, img height {} (min. {})".format(img.height, watermark_minimal_height))
-        return False
-    font = ImageFont.truetype(watermark_font, 14)
-
-    line_height = sum(font.getmetrics())
-
-    fontimage = Image.new('L', (font.getsize(watermark_label)[0], line_height))
-    ImageDraw.Draw(fontimage).text((0, 0), watermark_label, fill=watermark_fill, font=font)
-    fontimage = fontimage.rotate(watermark_rotate,  resample=Image.BICUBIC, expand=True)
-
-    img_size = img.crop().size
-    size = (img_size[0]-fontimage.size[0]-5, img_size[1]-fontimage.size[1]-10)
-
-    img.paste(watermark_text_color, box=size, mask=fontimage)
-
-    img_byte_arr = io.BytesIO()
-    img.save(img_byte_arr, format=img.format)
-    img_byte_arr = img_byte_arr.getvalue()
-
-    return img_byte_arr
 
 
 def get_cookie():
-    data_api = {"name": zabbix_api_login,"password": zabbix_api_pass,"enter": "Sign in"}
+    data_api = {"name": zabbix_api_login, "password": zabbix_api_pass, "enter": "Sign in"}
     req_cookie = requests.post(zabbix_api_url, data=data_api, verify=False)
     cookie = req_cookie.cookies
     req_cookie.close()
@@ -179,19 +153,11 @@ def get_chart_png(itemid, graff_name, period=None):
                 cookies=cookies,
                 verify=False)
 
-            if watermark:
-                wmt = watermark_text(response.content)
-                if wmt:
-                    return dict(img=wmt, url=response.url)
-                else:
-                    return dict(img=response.content, url=response.url)
-            else:
-                return dict(img=response.content, url=response.url)
+            return dict(img=response.content, url=response.url)
         else:
             return dict(img=None, url=None)
     except Exception as err:
         loggings.error("Exception occurred: {}".format(err), exc_info=config_exc_info), exit(1)
-
 
 def create_tags_list(_bool=False, tag=None, _type=None, zntsettingstag=False):
     tags_list = []
@@ -203,7 +169,7 @@ def create_tags_list(_bool=False, tag=None, _type=None, zntsettingstag=False):
                     if tags:
                         if not zntsettingstag:
                             if tags.find(':') != -1:
-                                tag, value = re.split(r':+',tags, maxsplit=1)
+                                tag, value = re.split(r':+', tags, maxsplit=1)
                                 if tag != trigger_settings_tag and tag != trigger_info_mentions_tag:
                                     tags_list.append('#{tag}_{value}'.format(
                                         tag=_type + re.sub(r"\W+", "_", tag) if _type else re.sub(r"\W+", "_", tag),
@@ -214,13 +180,14 @@ def create_tags_list(_bool=False, tag=None, _type=None, zntsettingstag=False):
                                 if len(tags.split()) > 0:
                                     for tg_s in tags.split():
                                         tags_list.append('#{tag}'.format(
-                                            tag=_type + re.sub(r"\W+", "_", tg_s) if _type else re.sub(r"\W+", "_", tg_s)))
+                                            tag=_type + re.sub(r"\W+", "_", tg_s) if _type else re.sub(r"\W+", "_",
+                                                                                                       tg_s)))
                                 else:
                                     tags_list.append('#{tag}'.format(
                                         tag=_type + re.sub(r"\W+", "_", tags) if _type else re.sub(r"\W+", "_", tags)))
                         else:
                             if tags.find(':') != -1:
-                                tag, value = re.split(r':+',tags, maxsplit=1)
+                                tag, value = re.split(r':+', tags, maxsplit=1)
                                 if tag == trigger_settings_tag:
                                     tags_list.append('#{tag}_{value}'.format(
                                         tag=_type + re.sub(r"\W+", "_", tag) if _type else re.sub(r"\W+", "_", tag),
@@ -251,7 +218,7 @@ def create_mentions_list(_bool=False, mentions=None):
         if _bool and mentions:
             for tags in mentions.split(', '):
                 if tags.find(':') != -1:
-                    tag, value = re.split(r':+',tags, maxsplit=1)
+                    tag, value = re.split(r':+', tags, maxsplit=1)
                     if tag == trigger_info_mentions_tag:
                         for username in value.split():
                             mentions_list.append(username)
@@ -312,7 +279,7 @@ def set_cache(title, send_id, sent_type, cache=None, update=None):
         else:
             cache[title] = dict(type=str(sent_type), id=str(send_id), old=str(update))
     f.seek(0)
-    f.write(json.dumps(cache,sort_keys=True, ensure_ascii=False, indent=4))
+    f.write(json.dumps(cache, sort_keys=True, ensure_ascii=False, indent=4))
     f.close()
     if update:
         loggings.info("Updated id for {} ({}): old '{}' -> new '{}' in cache file".format(
@@ -407,50 +374,11 @@ def gen_markup(eventid):
                              callback_data='{}'.format(json.dumps(dict(action="graphs", eventid=eventid)))))
     return markup
 
-def get_duty_for_today(excel_file_path):
-    # получаем текущую дату и номер листа в файле xlsx, соответствующий текущему месяцу
-    today = datetime.datetime.today()
-    current_month = today.month
-    current_list = current_month - 1
 
-    # находим строку с текущей датой в листе
-    current_row = today.day - 1
-
-    # открываем файл Excel и читаем значения
-    excel_file = pd.ExcelFile(excel_file_path)
-    duty_sheet = excel_file.sheet_names[current_list]
-    duty_list = pd.read_excel(excel_file, sheet_name=duty_sheet)
-    duty_main = duty_list.iat[current_row, 1] if len(duty_list) > current_row and not pd.isna(duty_list.iat[current_row, 1]) else ''
-    duty_first = duty_list.iat[current_row, 2] if len(duty_list) > current_row and not pd.isna(duty_list.iat[current_row, 2]) else ''
-    duty_second = duty_list.iat[current_row, 3] if len(duty_list) > current_row and not pd.isna(duty_list.iat[current_row, 3]) else ''
-
-    # ищем значения в листе 13 и записываем их в переменные
-    temp_sheet = pd.read_excel(excel_file, sheet_name='current', usecols=[0, 1])
-    temp_main = temp_sheet[temp_sheet.iloc[:, 0] == duty_main].iat[0, 1] if duty_main else ' '
-    temp_first = temp_sheet[temp_sheet.iloc[:, 0] == duty_first].iat[0, 1] if duty_first else ' '
-    temp_second = temp_sheet[temp_sheet.iloc[:, 0] == duty_second].iat[0, 1] if duty_second else ' '
-
-    # определяем время и добавляем соответствующее значение в список duty
-    now = datetime.datetime.now().time()
-    duty = []
-    if datetime.time(8, 30) <= now <= datetime.time(17, 30):
-        duty.append(temp_main)
-    if datetime.time(11, 0) <= now <= datetime.time(20, 0):
-        duty.append(temp_first)
-    if now >= datetime.time(20, 0) or now <= datetime.time(8, 0):
-        duty.append(temp_second)
-
-    # возвращаем список как строку
-    return ' '.join(map(str, duty)
-
-list_of = get_duty_for_today(duty_xlsx_path if duty_enable else '')
-
-def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=None, disable_notification=False, list_of=list_of):
+def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=None, disable_notification=False):
     try:
         sent_id = get_send_id(sent_to)
         if message and sent_to:
-            if list_of:
-                message += "\n" + list_of
             if graphs_png and isinstance(graphs_png, list):
                 try:
                     graphs_png[0].caption = message
@@ -464,7 +392,7 @@ def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=
                         loggings.error("Exception occurred in Api Telegram: {}".format(err), exc_info=config_exc_info),
                         exit(1)
                 except Exception as err:
-                    loggings.error("Exception occurred: {}".format(err), exc_info=config_exc_info),exit(1)
+                    loggings.error("Exception occurred: {}".format(err), exc_info=config_exc_info), exit(1)
                 else:
                     loggings.info('Bot @{busername}({bid}) send media group to "{sent_to}" ({sent_id}).'.format(
                         sent_to=sent_to, sent_id=sent_id, busername=bot.get_me().username, bid=bot.get_me().id))
@@ -480,9 +408,9 @@ def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=
                         send_messages(sent_to, message, graphs_png, settings_keyboard, disable_notification)
                     elif 'IMAGE_PROCESS_FAILED' in err.result.text:
                         bot.send_photo(chat_id=sent_id, photo=open(
-                              file='{0}/zbxTelegram_files/error_send_photo.png'.format(
-                                  os.path.dirname(os.path.realpath(__file__))),
-                              mode='rb').read(), caption=message, parse_mode="HTML",
+                            file='{0}/zbxTelegram_files/error_send_photo.png'.format(
+                                os.path.dirname(os.path.realpath(__file__))),
+                            mode='rb').read(), caption=message, parse_mode="HTML",
                                        reply_markup=gen_markup(
                                            eventid) if zabbix_keyboard and settings_keyboard else None,
                                        disable_notification=disable_notification)
@@ -490,7 +418,7 @@ def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=
                         loggings.error("Exception occurred in Api Telegram: {}".format(err), exc_info=config_exc_info),
                         exit(1)
                 except Exception as err:
-                    loggings.error("Exception occurred: {}".format(err), exc_info=config_exc_info),exit(1)
+                    loggings.error("Exception occurred: {}".format(err), exc_info=config_exc_info), exit(1)
                 else:
                     loggings.info('Bot @{busername}({bid}) send photo to "{sent_to}" ({sent_id}).'.format(
                         sent_to=sent_to, sent_id=sent_id, busername=bot.get_me().username, bid=bot.get_me().id))
@@ -606,7 +534,6 @@ def main():
     tags_list.append(actionid_tags) if actionid_tags else None
     tags_list.append(hostid_tags) if hostid_tags else None
 
-
     trigger_url = create_links_list(
         _bool=True if data_zabbix.get('settings_triggerlinks_bool') and body_messages_url_notes else False,
         url=data_zabbix.get('triggerurl'),
@@ -627,7 +554,9 @@ def main():
         url=zabbix_event_link.format(zabbix_server=zabbix_api_url, eventid=data_zabbix.get('eventid'),
                                      triggerid=data_zabbix.get('triggerid')), _type=body_messages_url_emoji_event)
 
-    if isinstance(zntsettings_tags, dict) and not all(settings.find(trigger_settings_tag_graph_period) and len(settings) > 0 for settings in zntsettings_tags[trigger_settings_tag]):
+    if isinstance(zntsettings_tags, dict) and not all(
+            settings.find(trigger_settings_tag_graph_period) and len(settings) > 0 for settings in
+            zntsettings_tags[trigger_settings_tag]):
         try:
             graph_period_raw = [settings if settings.find(trigger_settings_tag_graph_period) == 0 else False for
                                 settings in zntsettings_tags['ZNTSettings']][0]
@@ -649,7 +578,7 @@ def main():
                 url=zabbix_graph_link.format(zabbix_server=zabbix_api_url, itemid=item_id,
                                              range_time=data_zabbix['graphs_period']),
                 _type=body_messages_url_emoji_graphs
-                                           )
+            )
             url_list.append(items_link) if items_link else None
     url_list.append(event_url) if event_url else None
     url_list.append(ack_url) if ack_url else None
@@ -659,7 +588,8 @@ def main():
         title=data_zabbix['title'],
         period_time=set_period_day_hour(graph_period))
 
-    if (data_zabbix.get('settings_graphs_bool') and zabbix_graph) and trigger_settings_tag_no_graph not in zntsettings_tags[trigger_settings_tag]:
+    if (data_zabbix.get('settings_graphs_bool') and zabbix_graph) and trigger_settings_tag_no_graph not in \
+            zntsettings_tags[trigger_settings_tag]:
         num_items_id = [item_id for item_id in data_zabbix['itemid'].split() if re.findall(r"\d+", item_id)]
         if len(num_items_id) == 1:
             graphs_png = get_chart_png(itemid=num_items_id[0],
@@ -696,14 +626,16 @@ def main():
 
     tags = body_messages_tags_delimiter.join(tags_list) if body_messages_tags and len(tags_list) != 0 else ''
 
-    mentions = ' '.join(mentions) if not isinstance(mentions, bool) and body_messages_mentions_settings and len(mentions) != 0 else ''
+    mentions = ' '.join(mentions) if not isinstance(mentions, bool) and body_messages_mentions_settings and len(
+        mentions) != 0 else ''
 
-    message = body_messages.format(subject=subject, body='\n\n'+body if body else '',
-                                   links='\n'+links if links else '', tags='\n\n'+tags if tags else '',
-                                   mentions='\n\n'+mentions if mentions else '')
+    message = body_messages.format(subject=subject, body='\n\n' + body if body else '',
+                                   links='\n' + links if links else '', tags='\n\n' + tags if tags else '',
+                                   mentions='\n\n' + mentions if mentions else '')
 
     send_messages(args.username, message, graphs_png, data_zabbix['eventid'], data_zabbix.get('settings_keyboard_bool'),
-                  disable_notification=True if isinstance(zntsettings_tags, dict) and trigger_settings_tag_not_notify in zntsettings_tags[trigger_settings_tag]
+                  disable_notification=True if isinstance(zntsettings_tags, dict) and trigger_settings_tag_not_notify in
+                                               zntsettings_tags[trigger_settings_tag]
                   else False)
     exit(0)
 

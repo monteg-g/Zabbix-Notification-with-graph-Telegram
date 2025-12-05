@@ -1,11 +1,11 @@
 #!/usr/lib/zabbix/alertscripts/venv/bin/python
 # -*- coding: utf-8 -*-
-########################
+#####################################
 # Sokolov Dmitry & Krasnousov Yuriy #
-########################
+#####################################
 
 __author__ = "Sokolov Dmitry"
-__maintainer__ = "Sokolov Dmitry"
+__maintainer__ = "Krasnousov Yuriy"
 __license__ = "MIT"
 
 config_debug_mode = False
@@ -19,15 +19,6 @@ tg_token = ''
 
 duty_enable = False
 duty_xlsx_path = ''
-
-watermark = True
-watermark_label = 'Dmitry Sokolov (https://github.com/xxsokolov)'
-watermark_font = '/usr/lib/zabbix/alertscripts/zbxTelegram_files/ArialMT.ttf'
-watermark_minimal_height = 30
-watermark_fill = 255
-watermark_rotate = 0
-watermark_expand = True
-watermark_text_color = (60, 60, 60)
 
 body_messages = '<b>{subject}</b>{body}{links}{tags}{mentions}'
 body_messages_cut_symbol = True
@@ -89,21 +80,21 @@ zabbix_api_login = 'Admin'
 zabbix_api_pass = 'zabbix'
 
 zabbix_graph = True
-zabbix_graph_period_default = 10800  # 3h
-zabbix_graph_chart = '{zabbix_server}chart3.php?' \
-                     'name={name}&' \
+zabbix_graph_period_default = 1800  # 30m
+
+zabbix_graph_chart = '{zabbix_server}chart.php?' \
                      'from=now-{range_time}&' \
                      'to=now&' \
-                     'width=900&' \
-                     'height=200&' \
-                     'items[0][itemid]={itemid}&' \
-                     'legend=1&' \
-                     'showtriggers=1&' \
-                     'showworkperiod=1'
+                     'itemids[0]={itemid}&' \
+                     'type=0&' \
+                     'resolve_macros=1&' \
+                     'profileIdx=web.item.graph.filter&' \
+                     'profileIdx2={itemid}&' \
+                     'width=800&' \
+                     'height=200&'
 
 zabbix_host_link = "{zabbix_server}zabbix.php?action=search&search={host}"
-zabbix_graph_link = "{zabbix_server}history.php?action=showgraph&itemids[]={itemid}&from=now-{range_time}&to-now"
-#zabbix_ack_link = "{zabbix_server}zabbix.php?action=acknowledge.edit&eventids[0]={eventid}"  # Zabbix Server ver > 5
+zabbix_graph_link = "{zabbix_server}history.php?action=showgraph&itemids[]={itemid}&from=now-1d&to-now"
 zabbix_ack_link = "{zabbix_server}zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]={eventid}"  # Zabbix Server ver <= 5
 zabbix_event_link = "{zabbix_server}tr_events.php?triggerid={triggerid}&eventid={eventid}"
 
