@@ -1,12 +1,11 @@
 # <p align="center">Zabbix Notification with graph to Telegram
-<p align="center">Нотификатор оповещений в Telegram для <a href="https://www.zabbix.com/features#notification target="_blank"" >Zabbix</a>.<br>
+<p align="center">Нотификатор оповещений в Telegram для <a href="https://www.zabbix.com/features#notification target="_blank"" >Zabbix 7</a>.<br>
 Легкая установка, гибкая настройка, информативные сообщения.
 <p align="center"><a href="https://www.zabbix.com/integrations/telegram#tab:3rd_party" target="_blank">Popular на www.zabbix.com</a> и <a href="https://share.zabbix.com/zabbix-tools-and-utilities/cat-notifications/zabbix-notification-telegram">share.zabbix.com</a>
 <br>
 
 * [Возможности](#возможности)
-* [С чего начать](#с-чего-начать)
-   * [Установка из source](#установка-из-source-git-requires)
+* [Установка]
 * [Создаем первое оповещение](#создаем-первое-оповещение)
   * [Получаем API token](#получаем-api-token)
 * [Настраиваем нотификатор](#настраиваем-нотификатор)
@@ -25,16 +24,6 @@
 - Маппинг Emoji статуса и важности события.
 - Обьединение графиков в альбом.
 
-## С чего начать
-Для работы потребуется Python 3+ и Zabbix 3+.
-#### Установка из source (git requires)*:
-```
-$ cd /usr/lib/zabbix/alertscripts
-$ git clone https://*.git .
-```
-После этого нотификатор практически готов к работе, потребуется еще несколько шагов.
-
-*Подробную инструкцию вы можете найти на wiki*: <a href="https://github.com/xxsokolov/Zabbix-Notification-Telegram/wiki/Установка-нотификатора-Zabbix-Notification-Telegram" target="_blank">RU</a>, ENG (vacant)
 
 ## Создаем первое оповещение
 ### Получаем API token
