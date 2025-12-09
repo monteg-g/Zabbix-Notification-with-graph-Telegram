@@ -18,7 +18,8 @@ tg_proxy_server = {'https': 'socks5://username:password@domen:port'}
 tg_token = ''
 
 duty_enable = False
-duty_xlsx_path = ''
+#duty_xlsx_path = ''
+#excel_file_path = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEP-Ve-f3Jo-Zd1Xn0Lx-GmsQQOLe31ZnGnC97LCP3MbftWlB555nmIqZXaJsxfMBY7aBd6SqmjK-d/pub?output=xlsx'
 
 body_messages = '<b>{subject}</b>{body}{links}{tags}{mentions}'
 body_messages_cut_symbol = True
