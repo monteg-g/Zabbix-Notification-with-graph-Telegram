@@ -18,8 +18,6 @@ import urllib3
 import re
 import sys
 import os
-#import io
-#from PIL import Image, ImageDraw, ImageFont
 import json
 from errno import ENOENT
 import logging
@@ -152,13 +150,6 @@ def get_chart_png(itemid, graff_name, period=None):
                 cookies=cookies,
                 verify=False)
 
-            #if watermark:
-            #    wmt = watermark_text(response.content)
-            #    if wmt:
-            #        return dict(img=wmt, url=response.url)
-            #    else:
-            #        return dict(img=response.content, url=response.url)
-            #else:
             return dict(img=response.content, url=response.url)
         else:
             return dict(img=None, url=None)
@@ -417,11 +408,6 @@ def get_duty_for_today(excel_file_path):
 
     # возвращаем список как строку
     return ' '.join(map(str, duty))
-
-#сюда записываем ссылку на документ
-#list_of = get_duty_for_today('https://docs.google.com/spreadsheets/d/e/2PACX-1vScp6jb3ugyg3d-_GherN8LWpVj_luF1wDqEmk8E4DpaVl5nLa87JjHj-oNwqm4tGUDSS-bAIcZg5i9/pub?output=xlsx')
-list_of = get_duty_for_today('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEP-Ve-f3Jo-Zd1Xn0Lx-GmsQQOLe31ZnGnC97LCP3MbftWlB555nmIqZXaJsxfMBY7aBd6SqmjK-d/pub?output=xlsx')
-#list_of = get_duty_for_today('')
 
 def send_messages(sent_to, message, graphs_png, eventid=None, settings_keyboard=None, disable_notification=False, list_of=list_of):
     try:
