@@ -4,18 +4,11 @@
 <p align="center"><a href="https://www.zabbix.com/integrations/telegram#tab:3rd_party" target="_blank">Popular на www.zabbix.com</a> и <a href="https://share.zabbix.com/zabbix-tools-and-utilities/cat-notifications/zabbix-notification-telegram">share.zabbix.com</a>
 <br>
 
-## Возможности
-- Графики, информативные заголовки, ссылки<a href="#note1" id="note1ref"><sup>1</sup></a>, тэги<a href="#note2" id="note2ref"><sup>2</sup></a> и упоминания объединены в **одно сообщение**.
-- Формирование и обновление cash файла (privat, group, group -> supergroup)<a href="#note3" id="note3ref"><sup>3</sup></a>
-- Гибкая настройка через конфигурационный файл, XML разметку в <a href="https://www.zabbix.com/documentation/current/manual/config/notifications/action" target="_blank">действиях триггеров</a> и Trigger Tags<a href="#note4" id="note4ref"><sup>4</sup></a>
-- Маппинг Emoji статуса и важности события.
-- Обьединение графиков в альбом.
-
-## Логирование
-
-Все основные события (отправка, добавления в cash файл, изменение группы в суппергруппу, ошибки, дебаг) логируются в файле ```znt.log```, Вы можете его найти по умолчанию ```/usr/lib/zabbix/alertscripts/zbxTelegram_files/znt.log``` (<a href="https://github.com/xxsokolov/Zabbix-Notification-Telegram/blob/master/zbxTelegram_config.example.py#L15" target="_blank">config_log_file</a>])
-Поддерживаются три режима логирования:
-1. Обычный(по-умолчанию), ведется минимальный log об операциях в нотификаторе;
-2. <a href="https://github.com/xxsokolov/Zabbix-Notification-Telegram/blob/master/zbxTelegram_config.example.py#L12" target="_blank">Debug</a>], более детальный log, требуется только для анализа ошибок в работе нотификатора *(по-умолчанию False)*;
-3. <a href="https://github.com/xxsokolov/Zabbix-Notification-Telegram/blob/master/zbxTelegram_config.example.py#L13" target="_blank">exc_info</a>], полный Traceback ошибок *(по-умолчанию False)*;
-
+- установка
+  https://github.com/monteg-g/Zabbix-Notification-with-graph-Telegram/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0
+- тэги
+  https://github.com/monteg-g/Zabbix-Notification-with-graph-Telegram/wiki/%D0%A2%D1%8D%D0%B3%D0%B8
+- xml разметка
+  https://github.com/monteg-g/Zabbix-Notification-with-graph-Telegram/wiki/XML-%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%82%D0%BA%D0%B0
+- конфиг
+  https://github.com/monteg-g/Zabbix-Notification-with-graph-Telegram/wiki/zbxTelegram_config.py
