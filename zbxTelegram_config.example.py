@@ -15,11 +15,10 @@ config_log_file = '/usr/lib/zabbix/alertscripts/zbxTelegram_files/znt.log'
 
 tg_proxy = False
 tg_proxy_server = {'https': 'socks5://username:password@domen:port'}
-tg_token = ''
+tg_token = '*'
 
-duty_enable = False
-#duty_xlsx_path = ''
-#excel_file_path = '=xlsx'
+duty_enabled = False
+duty_excel_url = '*=xlsx'
 
 body_messages = '<b>{subject}</b>{body}{links}{tags}{mentions}'
 body_messages_cut_symbol = True
@@ -77,11 +76,11 @@ zabbix_keyboard_button_history = 'History'
 zabbix_keyboard_row_width = 3
 
 zabbix_api_url = 'http://127.0.0.1/zabbix/'
-zabbix_api_login = 'Admin'
-zabbix_api_pass = 'zabbix'
+zabbix_api_login = '*'
+zabbix_api_pass = '*'
 
 zabbix_graph = True
-zabbix_graph_period_default = 1800  # 30m
+zabbix_graph_period_default = 1800
 
 zabbix_graph_chart = '{zabbix_server}chart.php?' \
                      'from=now-{range_time}&' \
@@ -96,7 +95,7 @@ zabbix_graph_chart = '{zabbix_server}chart.php?' \
 
 zabbix_host_link = "{zabbix_server}zabbix.php?action=search&search={host}"
 zabbix_graph_link = "{zabbix_server}history.php?action=showgraph&itemids[]={itemid}&from=now-1d&to-now"
-zabbix_ack_link = "{zabbix_server}zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]={eventid}"  # Zabbix Server ver <= 5
+zabbix_ack_link = "{zabbix_server}zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]={eventid}"
 zabbix_event_link = "{zabbix_server}tr_events.php?triggerid={triggerid}&eventid={eventid}"
 
 
